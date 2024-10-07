@@ -67,7 +67,7 @@ export default function Dashboard() {
         <h1>My connnections</h1>
         <ul>
           {data.map((connection) => (
-            <li>
+            <li key={connection[0].id}>
               <Link href={`/chat/${connection[0].id}`}>
                 Chat with {connection[0].name}
               </Link>

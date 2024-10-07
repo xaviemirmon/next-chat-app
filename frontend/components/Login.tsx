@@ -20,7 +20,7 @@ export default function Login({ data }: { data: UserType[] }) {
         <h1>Login to Chat</h1>
         <ul>
           {data.map((user) => (
-            <li>
+            <li key={user.id}>
               <button
                 onClick={() => {
                   setLoading(true);
