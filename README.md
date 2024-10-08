@@ -13,7 +13,9 @@ This project is a web-based implementation of  Chat, designed for rich conversat
 NEXT_PUBLIC_API_URL=localhost:3001
 API_URL=backend:3001
 ```
-4. Run `docker-compose up` (the first time you fire up the containers it may take 5-10mins as everything is downloaded and propagated).  When you see something like:
+4. Run `docker-compose up` (the first time you fire up the containers it may take 5-10mins as everything is downloaded and propagated).  
+
+When you see something like:
 ```sh
 web-1      |   ▲ Next.js 14.2.14
 web-1      |   - Local:        http://localhost:3000
@@ -23,6 +25,7 @@ web-1      |  ⚠ "next start" does not work with "output: standalone" configura
 web-1      |  ✓ Ready in 608ms
 ```
 you are good go!
+
 5. Open `http://localhost:3000` in your browser to view the application.
 
 ## Features
