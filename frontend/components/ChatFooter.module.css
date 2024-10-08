@@ -5,7 +5,7 @@
   border-radius: 50px;
   border: 1px solid var(--color-grey-dark);
   font-family: inherit;
-  font-size: 16px;
+  font-size: var(--font-med);
 }
 
 .footer {
