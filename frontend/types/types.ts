@@ -9,7 +9,8 @@ export type MessageType = {
   senderId: number;
   targetId: number;
   content: string;
-  timestamp: string;
+  timestamp?: string;
+  connectionId: number;
 };
 
 export type UserType = {
