@@ -3,92 +3,66 @@
 import { useUser } from "@/providers/UserProvider";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { fetchData } from "./Dashboard";
+import { fetchData } from "@/lib/fetchData";
 import styles from "./Chat.module.css";
 import { MessageType, ConnectionType, UserType } from "@/types/types";
+import { Spinner } from "@/components/Spinner";
 
 const Chat = ({ target }: { target: number }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [input, setInput] = useState("");
   const ws = useRef<WebSocket | null>(null);
-  const connectionId = useRef<Number | null>(null);
+  const connectionId = useRef<number | null>(null);
   const [connection, setConnection] = useState<ConnectionType | undefined>();
-  const [userData, setUserData] = useState<UserType[] | undefined>();
-  const [targetUserData, setTargetUserData] = useState<
-    UserType[] | undefined
-  >();
+  const [userData, setUserData] = useState<UserType | undefined>();
+  const [targetUserData, setTargetUserData] = useState<UserType | undefined>();
   const router = useRouter();
   const { user } = useUser();
   const [loading, setLoading] = useState(true);
 
-  if (!user) {
-    setLoading(true);
-    router.push("/");
-  }
+  // Redirect if no user
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   useEffect(() => {
-    const fetchConnections = async () => {
-      try {
-        const connections: ConnectionType[] = await fetchData(
-          `http://127.0.0.1:3001/connections/${user}`,
-        );
-        const connectionData = connections.filter(
-          (connection) => connection.userId === target,
-        )?.[0];
-        connectionId.current = connectionData.connectionId;
-        setConnection(connectionData);
-      } catch (error) {
-        console.error("Error fetching connections or user data:", error);
-      } finally {
-        //   setLoading(false); // Set loading to false once fetching is done
-      }
-    };
+    const getData = async () => {
+      if (!user) return;
 
-    const fetchUser = async () => {
+      // Initialise data from backend API
       try {
-        const userData: UserType[] = await fetchData(
-          `http://127.0.0.1:3001/user/${user}`,
+        const [connections, userData, targetUserData] = await Promise.all([
+          fetchData(`http://127.0.0.1:3001/connections/${user}`),
+          fetchData(`http://127.0.0.1:3001/user/${user}`),
+          fetchData(`http://127.0.0.1:3001/user/${target}`),
+        ]);
+
+        const connectionData = connections.find(
+          (connection: ConnectionType) => connection.userId === target,
         );
+        if (connectionData) {
+          connectionId.current = connectionData.connectionId;
+          setConnection(connectionData);
+          const messagesData = await fetchData(
+            `http://127.0.0.1:3001/messages/${connectionId.current}`,
+          );
+          setMessages(messagesData);
+        }
 
         setUserData(userData);
-      } catch (error) {
-        console.error("Error fetching connections or user data:", error);
-      }
-    };
-
-    const fetchTargetUser = async () => {
-      try {
-        const targetUserData: UserType[] = await fetchData(
-          `http://127.0.0.1:3001/user/${target}`,
-        );
-
         setTargetUserData(targetUserData);
       } catch (error) {
-        console.error("Error fetching connections or user data:", error);
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const fetchMessages = async () => {
-      try {
-        const messages = await fetchData(
-          `http://127.0.0.1:3001/messages/${connectionId.current}`,
-        );
+    getData();
 
-        setMessages(messages);
-      } catch (error) {
-        console.error("Error fetching connections or user data:", error);
-      }
-    };
-
-    const initializeData = async () => {
-      await fetchConnections(); // Ensure connectionId is fetched
-      await fetchMessages(); // Only fetch messages after connectionId is set
-      user && fetchUser(); // Fetch user data in parallel
-      target && fetchTargetUser(); // Fetch target user data in parallel
-    };
-
-    initializeData();
-    // Create a WebSocket connection to the Express server
+    // Initialise WebSocket connection
     ws.current = new WebSocket("ws://localhost:3001");
 
     ws.current.onopen = () => {
@@ -99,12 +73,8 @@ const Chat = ({ target }: { target: number }) => {
 
     ws.current.onmessage = (event) => {
       const message = JSON.parse(event.data);
-
-      setMessages((prevChat) => [...prevChat, message]);
+      setMessages((prevMessages) => [...prevMessages, message]);
     };
-    setLoading(false);
-  }, [user]);
-
   function isOnlyEmoji(message: string) {
     // Check if the message is empty
     if (!message) {
@@ -116,10 +86,10 @@ const Chat = ({ target }: { target: number }) => {
     // Regex to match emoji characters
     const emojiRegex = /^[\p{Emoji}]+$/u;
     return emojiRegex.test(message);
-  }
+  }, [user, target]);
 
   const sendMessage = () => {
-    if (ws.current && input.trim() && user !== null) {
+    if (ws.current && input.trim() && user && connectionId.current) {
       const message: MessageType = {
         type: "message",
         senderId: user,
@@ -128,48 +98,39 @@ const Chat = ({ target }: { target: number }) => {
         connectionId: connectionId.current,
       };
 
-      setMessages((prevChat) => [...prevChat, message]);
+      setMessages((prevMessages) => [...prevMessages, message]);
       ws.current.send(JSON.stringify(message));
       setInput("");
     }
   };
 
-  const handleKeyDown = (event: { key: string }) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       sendMessage();
     }
   };
 
-  const connectionDate = connection && new Date(connection.createdAt);
+  const formattedConnectionDate = connection
+    ? new Date(connection.createdAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "";
 
-  // Define the options for formatting the date
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric", // 'numeric' or '2-digit'
-    month: "long", // 'numeric', '2-digit', 'long', 'short', 'narrow'
-    day: "numeric", // 'numeric' or '2-digit'
-  };
+  const formattedConnectionTime = connection
+    ? new Date(connection.createdAt).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })
+    : "";
 
-  // Format the date using the toLocaleDateString() method
-  const formattedConnectionDate =
-    connectionDate && connectionDate.toLocaleDateString("en-US", options);
-
-  const connectionTimeOptions: Intl.DateTimeFormatOptions = {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  };
-
-  const formattedConnectionTime =
-    connectionDate &&
-    connectionDate.toLocaleTimeString("en-US", connectionTimeOptions);
-
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
+  if (loading) return <Spinner />;
 
   return (
-    <div className={styles.chatContainer}>
-      {userData?.[0]?.name}
+    <div className={styles.container}>
+      {userData?.name}
       <div className={styles.chatWindow}>
         <div>
           <p>
@@ -178,26 +139,24 @@ const Chat = ({ target }: { target: number }) => {
           </p>
           <p>You matched &#127880;</p>
         </div>
-
-        {messages.map((msg, index) => {
-          if (msg.type !== "connect") {
-            return (
+        {messages.map(
+          (message, index) =>
+            message.type !== "connect" && (
               <div
                 key={index}
-                className={`${styles.message} ${msg.senderId === user ? styles.user : styles.sender} ${isOnlyEmoji(msg.content) ? styles.emoji : ""}`}
+                className={`${styles.message} ${message.senderId === user ? styles.user : styles.sender} ${isOnlyEmoji(message.content) ? styles.emoji : ""}`}
               >
-                {msg.content}
+                {message.content}
               </div>
-            );
-          }
-        })}
+            ),
+        )}
       </div>
       <input
         type="text"
         value={input}
         className={styles.text}
         onChange={(e) => setInput(e.target.value)}
-        placeholder={`Message ${targetUserData?.[0]?.name}`}
+        placeholder={`Message ${targetUserData?.name}`}
         onKeyDown={handleKeyDown}
       />
     </div>
