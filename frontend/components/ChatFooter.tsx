@@ -31,6 +31,7 @@ export const ChatFooter = ({
         targetId: target,
         content: input,
         connectionId: connectionId.current,
+        createdAt: new Date().toISOString(),
       };
 
       setMessages((prevMessages: MessageType[]) => [

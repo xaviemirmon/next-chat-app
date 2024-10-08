@@ -76,7 +76,7 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
       const message = JSON.parse(event.data);
       setMessages((prevMessages) => [...prevMessages, message]);
     };
-  }, [user, target]);
+  }, [user, target, apiUrl]);
 
   if (loading) return <Spinner />;
 

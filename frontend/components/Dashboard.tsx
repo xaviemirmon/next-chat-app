@@ -2,31 +2,33 @@
 
 import { useUser } from "@/providers/UserProvider";
 import { ConnectionType, UserType } from "@/types/types";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchData } from "@/lib/fetchData";
 import { Button } from "@/components/Button";
+import { Spinner } from "./Spinner";
 
-export default function Dashboard() {
+export default function Dashboard({ apiUrl }: { apiUrl: string | undefined }) {
   const { user } = useUser();
 
   const router = useRouter();
 
   const [data, setData] = useState<UserType[] | undefined>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchConnections = async () => {
+      setLoading(true);
       try {
         const connections: ConnectionType[] = await fetchData(
-          `http://127.0.0.1:3001/connections/${user}`,
+          `http://${apiUrl}/connections/${user}`,
         );
 
         // Fetch user data for each userId in the connections
         const userDataPromises = connections.map(async (connection) => {
           const userResponse: UserType = await fetchData(
-            `http://127.0.0.1:3001/user/${connection.userId}`,
+            `http://${apiUrl}/user/${connection.userId}`,
           );
           return userResponse; // Return user data for each userId
         });
@@ -41,14 +43,14 @@ export default function Dashboard() {
       }
     };
     fetchConnections();
-  }, [user]);
+  }, [user, apiUrl]);
 
   if (!user) {
     router.push("/");
   }
 
   if (loading) {
-    <div>Loading...</div>;
+    <Spinner />;
   }
 
   if (data) {
@@ -73,4 +75,5 @@ export default function Dashboard() {
       </div>
     );
   }
+  return <p>somthing went wrong </p>;
 }
