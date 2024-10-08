@@ -102,6 +102,9 @@ export const apiServer = ({
     try {
       const messages = await prisma.message.findMany({
         where: { connectionId },
+        orderBy: {
+          createdAt: 'asc',
+        },
       });
       res.send(messages);
     } catch (error) {

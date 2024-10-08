@@ -10,7 +10,7 @@ export const socketServer = ({
   server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
 }) => {
-  // Initialize WebSocket server
+  // Initialise WebSocket server
   const wss = new WebSocket.Server({ server });
 
   // Object to store connected users by their IDs

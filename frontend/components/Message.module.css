@@ -17,6 +17,7 @@
   background: var(--color-primary);
   text-align: right;
   align-self: flex-end;
+  border-bottom-right-radius: 0;
 }
 
 .grouped {

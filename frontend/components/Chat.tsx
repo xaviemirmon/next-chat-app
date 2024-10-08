@@ -21,7 +21,7 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
   const [userData, setUserData] = useState<UserType | undefined>();
   const [targetUserData, setTargetUserData] = useState<UserType | undefined>();
   const router = useRouter();
-  const { user, logoutUser } = useUser();
+  const { user } = useUser();
   const [loading, setLoading] = useState(true);
 
   // Redirect if no user
@@ -81,12 +81,14 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
     };
   }, [user, target]);
 
+  
   if (loading) return <Spinner />;
 
   return (
     <>
       <ChatHeader
-        userName={userData?.name}
+        userName={targetUserData?.name}
+        userId={targetUserData?.userId}
         setLoading={setLoading}
         router={router}
       />

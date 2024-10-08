@@ -6,7 +6,7 @@ import http from "http";
 import { socketServer } from "./socket-server";
 import { apiServer } from "./api-server";
 
-// Initialize Prisma and Express
+// Initialise Prisma and Express/Websocket server
 const prisma = new PrismaClient();
 const app = express();
 app.use(cors());
