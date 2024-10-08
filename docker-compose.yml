@@ -3,7 +3,7 @@ services:
     image: node:22
     ports:
       - "3000:3000"
-    command: sh -c "yarn install && yarn dev"
+    command: sh -c "yarn install && yarn build && yarn start"
     working_dir: /frontend
     volumes:
       - ./frontend:/frontend
@@ -19,8 +19,8 @@ services:
     working_dir: /backend
     volumes:
       - ./backend:/backend
-    env_file:
-      - .env
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/chatapp?schema=public
     depends_on:
       - db
   db:
@@ -28,7 +28,10 @@ services:
     restart: always
     volumes:
       - ./data:/docker-entrypoint-initdb.d
-    env_file:
-      - .env
+    environment:
+      DATABASE_URL: postgresql://postgres:password@db:5432/chatapp?schema=public
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: chatapp
     ports:
       - "5432:5432"
