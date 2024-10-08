@@ -22,10 +22,11 @@ export const socketServer = ({
 
     ws.on("message", async (message: string) => {
       const parsedMessage = JSON.parse(message);
-      const { type, senderId, targetId, content, connectionId } = parsedMessage;
+      const { type, senderId, targetId, content, connectionId, createdAt } =
+        parsedMessage;
 
       if (type === "connect") {
-        users[senderId] = ws; // Set user in plain object
+        users[senderId] = ws; // Set user in object
         console.log(`User ${senderId} connected`);
       } else if (type === "message") {
         // Handle messages between users
@@ -39,15 +40,15 @@ export const socketServer = ({
         });
 
         const sendToUser = (targetId: string, data: any) => {
-          const client = users[targetId]; // Get client from plain object
+          const client = users[targetId]; // Get client from object
           if (client && client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(data));
           }
         };
 
-        if (targetId && users[targetId]) { // Check for target user in plain object
-          sendToUser(targetId, { senderId, targetId, content });
-          sendToUser(senderId, { senderId, targetId, content });
+        if (targetId && users[targetId]) {
+          // Check for target user in object
+          sendToUser(targetId, { senderId, targetId, content, createdAt });
           console.log(`Message from ${senderId} to ${targetId}: ${content}`);
         } else {
           console.log(`Target user ${targetId} not connected`);
@@ -62,7 +63,7 @@ export const socketServer = ({
     ws.on("close", () => {
       for (const senderId in users) {
         if (users[senderId] === ws) {
-          delete users[senderId]; // Delete user from plain object
+          delete users[senderId]; // Delete user from object
           console.log(`User ${senderId} disconnected`);
           break; // Exit loop after finding the user
         }
