@@ -40,10 +40,22 @@ Message Grouping:
 * Messages separated by more than an hour are sectioned with the date and time.
 * Messages from the same user sent within 20 seconds are grouped together with reduced vertical spacing.
 
+#### Sending a message
+Type the message you want to send then hit Enter/Return
+
 ## Components 
 The components directory contains reusable UI components such as Message, Chat, ChatHeader, and ChatFooter.
 Each message bubble handles its own styling and logic, ensuring reusability.
+
 The project use and Express API and websocket to manage realtime and asynchronous message communitcation.  Loggged in user is stored with React Context.
+
+Events are stored in a Postgres DB with Prisma as the ORM.
+
+## Websockets
+
+With websockets you can open up two windows logged in as the different connected user (e.g. Sender and Alisha) chat together in realtime.
+
+You can also change `NEXT_PUBLIC_API_URL` to your local IP e.g. `NEXT_PUBLIC_API_URL=192.168.1.10:3001` and have a play from a mobile.
 
 ## Styling
 
@@ -84,8 +96,11 @@ Aim for comprehensive test coverage, including unit tests and integration tests.
 
 ### UI Consistency
 
-Collaborate with designers for a consistent UI library. Consider using third-party UI frameworks or design system for rapid development.
+Collaborate with designers for a consistent UI library. Consider using third-party UI frameworks or design system for rapid development.  More mobile styling.
 
 ### Online/Offline status
 
 Add Online/Offline status indicator for chat
+
+### Login/connection pages
+An actual auth system and connection addition page.
