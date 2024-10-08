@@ -1,55 +1,36 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 38px);
+  height: calc(100vh - 108px);
   justify-content: flex-end;
   max-width: 100%;
   margin: 0 auto;
-  padding: 16px;
+  margin-bottom: 80px;
 }
+
 .chatWindow {
+  padding: 16px;
   display: flex;
+  margin-top: 120px;
   flex-direction: column;
-}
-.text {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 50px;
-  border: 1px solid var(--color-grey-dark);
-}
-.message {
-  margin-top: 10px;
-  max-width: 200px;
-  width: fit-content;
-  padding: 10px;
-  border-radius: 15px;
-}
-
-.sender {
-  color: var(--color-grey-dark);
-  background: var(--color-grey-blue);
-  align-self: flex-start;
-  border-bottom-left-radius: 0;
-}
-.user {
-  color: var(--color-white);
-  background: var(--color-primary);
-  text-align: right;
-  align-self: flex-end;
-}
-
-.grouped {
-  border-bottom-right-radius: 0;
-  &:not(.emoji) {
-    margin-top: 0;
-    border-top-right-radius: 0;
+  overflow-x: auto;
+  & > div {
+    display: flex;
+    flex-direction: column;
   }
 }
 
-.emoji {
-  background: none;
-  font-size: 40px;
+.matched {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: var(--font-large);
+  padding-top: 8px;
+  color: var(--color-black);
 }
 
-.group {
+.center {
+  text-align: center;
+}
+
+.time {
+  font-size: var(--font-small);
 }

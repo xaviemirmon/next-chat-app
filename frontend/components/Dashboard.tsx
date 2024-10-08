@@ -5,7 +5,8 @@ import { ConnectionType, UserType } from "@/types/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { fetchData } from "../lib/fetchData";
+import { fetchData } from "@/lib/fetchData";
+import { Button } from "@/components/Button";
 
 export default function Dashboard() {
   const { user } = useUser();
@@ -57,9 +58,15 @@ export default function Dashboard() {
         <ul>
           {data.map((connection) => (
             <li key={connection.userId}>
-              <Link href={`/chat/${connection.userId}`}>
-                Chat with {connection.name}
-              </Link>
+              Chat with{` `}
+              <Button
+                onClick={() => {
+                  setLoading(true);
+                  router.push(`/chat/${connection.userId}`);
+                }}
+              >
+                {connection.name}
+              </Button>
             </li>
           ))}
         </ul>

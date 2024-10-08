@@ -10,6 +10,7 @@ export type MessageType = {
   targetId: number;
   content: string;
   timestamp?: string;
+  createdAt?: string;
   connectionId: number;
 };
 

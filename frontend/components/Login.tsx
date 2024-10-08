@@ -3,8 +3,9 @@
 import { useUser } from "@/providers/UserProvider";
 import { UserType } from "@/types/types";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Spinner } from "@/components/Spinner";
+import { Button } from "@/components/Button";
 
 export default function Login({ data }: { data: UserType[] }) {
   const { user, updateUser } = useUser();
@@ -17,15 +18,16 @@ export default function Login({ data }: { data: UserType[] }) {
         <ul>
           {data.map((user) => (
             <li key={user.userId}>
-              <button
+              Login as{` `}
+              <Button
                 onClick={() => {
                   setLoading(true);
                   updateUser(user.userId);
                   router.push("/dashboard");
                 }}
               >
-                Login as {user.name}
-              </button>
+                {user.name}
+              </Button>
             </li>
           ))}
         </ul>

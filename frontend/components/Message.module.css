@@ -1,0 +1,31 @@
+.message {
+  margin-top: 10px;
+  max-width: 200px;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.sender {
+  color: var(--color-grey-dark);
+  background: var(--color-grey-blue);
+  align-self: flex-start;
+  border-bottom-left-radius: 0;
+}
+.user {
+  color: var(--color-white);
+  background: var(--color-primary);
+  text-align: right;
+  align-self: flex-end;
+}
+
+.grouped {
+  &:not(.emoji) {
+    margin-top: -2px;
+  }
+}
+
+.emoji {
+  background: none;
+  font-size: 40px;
+}

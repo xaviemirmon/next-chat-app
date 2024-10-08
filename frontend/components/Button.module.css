@@ -1,0 +1,27 @@
+.primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 8px 16px;
+  border-radius: 16px;
+  border: none;
+  margin-top: 8px;
+  font-size: var(--font-med);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    filter: brightness(85%);
+  }
+}
+
+.icon {
+  background: none;
+  border: none;
+  font-size: var(--font-large);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    filter: brightness(65%);
+  }
+}

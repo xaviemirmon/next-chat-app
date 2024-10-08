@@ -5,5 +5,12 @@ export default function ChatPage({
 }: {
   params: { slug: string[] | string };
 }) {
-  return <Chat target={Number(params.slug)} />;
+  return (
+    <Chat
+      target={Number(params.slug)}
+      apiUrl={
+        process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL : ""
+      }
+    />
+  );
 }

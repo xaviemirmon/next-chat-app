@@ -7,9 +7,12 @@ import { fetchData } from "@/lib/fetchData";
 import styles from "./Chat.module.css";
 import { MessageType, ConnectionType, UserType } from "@/types/types";
 import { Spinner } from "@/components/Spinner";
-import { isOnlyEmoji } from "@/utils/utils";
+import { dateToTimestamp, formattedDate, formattedTime } from "@/utils/utils";
+import { Message } from "@/components/Message";
+import { ChatFooter } from "./ChatFooter";
+import { ChatHeader } from "./ChatHeader";
 
-const Chat = ({ target }: { target: number }) => {
+const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [input, setInput] = useState("");
   const ws = useRef<WebSocket | null>(null);
@@ -18,7 +21,7 @@ const Chat = ({ target }: { target: number }) => {
   const [userData, setUserData] = useState<UserType | undefined>();
   const [targetUserData, setTargetUserData] = useState<UserType | undefined>();
   const router = useRouter();
-  const { user } = useUser();
+  const { user, logoutUser } = useUser();
   const [loading, setLoading] = useState(true);
 
   // Redirect if no user
@@ -35,9 +38,9 @@ const Chat = ({ target }: { target: number }) => {
       // Initialise data from backend API
       try {
         const [connections, userData, targetUserData] = await Promise.all([
-          fetchData(`http://127.0.0.1:3001/connections/${user}`),
-          fetchData(`http://127.0.0.1:3001/user/${user}`),
-          fetchData(`http://127.0.0.1:3001/user/${target}`),
+          fetchData(`http://${apiUrl}/connections/${user}`),
+          fetchData(`http://${apiUrl}/user/${user}`),
+          fetchData(`http://${apiUrl}/user/${target}`),
         ]);
 
         const connectionData = connections.find(
@@ -47,7 +50,7 @@ const Chat = ({ target }: { target: number }) => {
           connectionId.current = connectionData.connectionId;
           setConnection(connectionData);
           const messagesData = await fetchData(
-            `http://127.0.0.1:3001/messages/${connectionId.current}`,
+            `http://${apiUrl}/messages/${connectionId.current}`,
           );
           setMessages(messagesData);
         }
@@ -64,11 +67,11 @@ const Chat = ({ target }: { target: number }) => {
     getData();
 
     // Initialise WebSocket connection
-    ws.current = new WebSocket("ws://localhost:3001");
+    ws.current = new WebSocket(`ws://${apiUrl}`);
 
     ws.current.onopen = () => {
       if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-        ws.current.send(JSON.stringify({ type: "connect", userId: user }));
+        ws.current.send(JSON.stringify({ type: "connect", senderId: user }));
       }
     };
 
@@ -78,78 +81,71 @@ const Chat = ({ target }: { target: number }) => {
     };
   }, [user, target]);
 
-  const sendMessage = () => {
-    if (ws.current && input.trim() && user && connectionId.current) {
-      const message: MessageType = {
-        type: "message",
-        senderId: user,
-        targetId: target,
-        content: input,
-        connectionId: connectionId.current,
-      };
-
-      setMessages((prevMessages) => [...prevMessages, message]);
-      ws.current.send(JSON.stringify(message));
-      setInput("");
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      sendMessage();
-    }
-  };
-
-  const formattedConnectionDate = connection
-    ? new Date(connection.createdAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "";
-
-  const formattedConnectionTime = connection
-    ? new Date(connection.createdAt).toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      })
-    : "";
-
   if (loading) return <Spinner />;
 
   return (
-    <div className={styles.container}>
-      {userData?.name}
-      <div className={styles.chatWindow}>
-        <div>
-          <p>
-            <strong>{formattedConnectionDate}</strong>&nbsp;
-            {formattedConnectionTime}
-          </p>
-          <p>You matched &#127880;</p>
-        </div>
-        {messages.map(
-          (message, index) =>
-            message.type !== "connect" && (
-              <div
-                key={index}
-                className={`${styles.message} ${message.senderId === user ? styles.user : styles.sender} ${isOnlyEmoji(message.content) ? styles.emoji : ""}`}
-              >
-                {message.content}
-              </div>
-            ),
-        )}
-      </div>
-      <input
-        type="text"
-        value={input}
-        className={styles.text}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder={`Message ${targetUserData?.name}`}
-        onKeyDown={handleKeyDown}
+    <>
+      <ChatHeader
+        userName={userData?.name}
+        setLoading={setLoading}
+        router={router}
       />
-    </div>
+      <div className={styles.container}>
+        <div className={styles.chatWindow}>
+          <div>
+            <p className={`${styles.center} ${styles.time}`}>
+              <strong>{formattedDate(connection?.createdAt)}</strong>&nbsp;
+              {formattedTime(connection?.createdAt)}
+            </p>
+            <p className={`${styles.center} ${styles.matched}`}>
+              You matched &#127880;
+            </p>
+          </div>
+          {messages.map((message, index) => {
+            if (message.type === "connect") return null;
+
+            let olderThanHour = false;
+            let grouped = false;
+
+            const currentMessageTimestamp =
+              message?.createdAt && dateToTimestamp(message?.createdAt);
+            let prevMessageTimestamp = null;
+            if (index > 0) {
+              prevMessageTimestamp = dateToTimestamp(
+                messages[index - 1]?.createdAt ?? "",
+              );
+            }
+
+            if (prevMessageTimestamp && currentMessageTimestamp) {
+              grouped = currentMessageTimestamp - prevMessageTimestamp <= 20;
+              olderThanHour =
+                currentMessageTimestamp - prevMessageTimestamp >= 3600;
+            }
+            return (
+              <div key={message.createdAt}>
+                {olderThanHour && (
+                  <p className={`${styles.center} ${styles.time}`}>
+                    <strong>{formattedDate(message?.createdAt)}</strong>&nbsp;
+                    {formattedTime(message?.createdAt)}
+                  </p>
+                )}
+                <Message message={message} user={user} grouped={grouped} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <ChatFooter
+        input={input}
+        setInput={setInput}
+        targetUserData={targetUserData}
+        setMessages={setMessages}
+        ws={ws}
+        connectionId={connectionId}
+        user={user}
+        target={target}
+      />
+    </>
   );
 };
 

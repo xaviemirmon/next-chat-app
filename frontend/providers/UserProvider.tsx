@@ -3,11 +3,11 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the shape of the User Context
-interface UserContextType {
+export type UserContextType = {
   user: number | null;
   updateUser: (newUserData: React.SetStateAction<number | null>) => void;
   logoutUser: () => void;
-}
+};
 
 // Create the context with the defined type
 const UserContext = createContext<UserContextType | null>(null);
