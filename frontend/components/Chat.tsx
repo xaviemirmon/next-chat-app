@@ -7,6 +7,7 @@ import { fetchData } from "@/lib/fetchData";
 import styles from "./Chat.module.css";
 import { MessageType, ConnectionType, UserType } from "@/types/types";
 import { Spinner } from "@/components/Spinner";
+import { isOnlyEmoji } from "@/utils/utils";
 
 const Chat = ({ target }: { target: number }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -75,17 +76,6 @@ const Chat = ({ target }: { target: number }) => {
       const message = JSON.parse(event.data);
       setMessages((prevMessages) => [...prevMessages, message]);
     };
-  function isOnlyEmoji(message: string) {
-    // Check if the message is empty
-    if (!message) {
-      return false;
-    }
-    // Remove whitespace from the start and end
-    message = message.trim();
-
-    // Regex to match emoji characters
-    const emojiRegex = /^[\p{Emoji}]+$/u;
-    return emojiRegex.test(message);
   }, [user, target]);
 
   const sendMessage = () => {
