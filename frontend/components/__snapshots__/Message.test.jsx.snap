@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Message component Matches snapshot for emoji-only message 1`] = `
+<DocumentFragment>
+  <div
+    class="message sender emoji "
+  >
+    😊
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Message component Matches snapshot for grouped messages 1`] = `
+<DocumentFragment>
+  <div
+    class="message sender emoji grouped"
+  >
+    This is a grouped message.
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Message component Matches snapshot for non-emoji message 1`] = `
+<DocumentFragment>
+  <div
+    class="message sender  "
+  >
+    How are you?
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Message component Matches snapshot for sender message 1`] = `
+<DocumentFragment>
+  <div
+    class="message sender  "
+  >
+    Hi there!
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Message component Matches snapshot for user message 1`] = `
+<DocumentFragment>
+  <div
+    class="message user  "
+  >
+    Hello!
+  </div>
+</DocumentFragment>
+`;

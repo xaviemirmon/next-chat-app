@@ -1,0 +1,297 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatHeader component Matches snapshot when user is logged in 1`] = `
+<DocumentFragment>
+  <div
+    class="header"
+  >
+    <div
+      class="profileLinks"
+    >
+      <button
+        class="icon"
+      >
+        <svg
+          color="#aeaeae"
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          style="color: rgb(174, 174, 174);"
+          viewBox="0 0 512 512"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M328 112 184 256l144 144"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="48"
+          />
+        </svg>
+      </button>
+      <div
+        class="userInfo"
+      >
+        <img
+          alt="Profile pic"
+          data-nimg="1"
+          decoding="async"
+          height="30"
+          loading="lazy"
+          src="/_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3D1&w=64&q=75"
+          srcset="/_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3D1&w=32&q=75 1x, /_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3D1&w=64&q=75 2x"
+          style="color: transparent;"
+          width="30"
+        />
+        Test User
+      </div>
+      <button
+        class="icon"
+      >
+        <svg
+          color="#aeaeae"
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          style="color: rgb(174, 174, 174);"
+          viewBox="0 0 512 512"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="256"
+            cy="256"
+            r="48"
+          />
+          <circle
+            cx="416"
+            cy="256"
+            r="48"
+          />
+          <circle
+            cx="96"
+            cy="256"
+            r="48"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="tabs"
+    >
+      <a
+        class="active tab"
+        href="#"
+      >
+        Chat
+      </a>
+      <a
+        class="tab"
+        href="#"
+      >
+        Profile
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ChatHeader component Matches snapshot when user is not logged in 1`] = `
+<DocumentFragment>
+  <div
+    class="header"
+  >
+    <div
+      class="profileLinks"
+    >
+      <button
+        class="icon"
+      >
+        <svg
+          color="#aeaeae"
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          style="color: rgb(174, 174, 174);"
+          viewBox="0 0 512 512"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M328 112 184 256l144 144"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="48"
+          />
+        </svg>
+      </button>
+      <div
+        class="userInfo"
+      >
+        <img
+          alt="Profile pic"
+          data-nimg="1"
+          decoding="async"
+          height="30"
+          loading="lazy"
+          src="/_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3Dnull&w=64&q=75"
+          srcset="/_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3Dnull&w=32&q=75 1x, /_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3Dnull&w=64&q=75 2x"
+          style="color: transparent;"
+          width="30"
+        />
+        Test User
+      </div>
+      <button
+        class="icon"
+      >
+        <svg
+          color="#aeaeae"
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          style="color: rgb(174, 174, 174);"
+          viewBox="0 0 512 512"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="256"
+            cy="256"
+            r="48"
+          />
+          <circle
+            cx="416"
+            cy="256"
+            r="48"
+          />
+          <circle
+            cx="96"
+            cy="256"
+            r="48"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="tabs"
+    >
+      <a
+        class="active tab"
+        href="#"
+      >
+        Chat
+      </a>
+      <a
+        class="tab"
+        href="#"
+      >
+        Profile
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ChatHeader component Matches snapshot when userName is undefined 1`] = `
+<DocumentFragment>
+  <div
+    class="header"
+  >
+    <div
+      class="profileLinks"
+    >
+      <button
+        class="icon"
+      >
+        <svg
+          color="#aeaeae"
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          style="color: rgb(174, 174, 174);"
+          viewBox="0 0 512 512"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M328 112 184 256l144 144"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="48"
+          />
+        </svg>
+      </button>
+      <div
+        class="userInfo"
+      >
+        <img
+          alt="Profile pic"
+          data-nimg="1"
+          decoding="async"
+          height="30"
+          loading="lazy"
+          src="/_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3D1&w=64&q=75"
+          srcset="/_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3D1&w=32&q=75 1x, /_next/image?url=https%3A%2F%2Fi.pravatar.cc%2F30%3Fimg%3D1&w=64&q=75 2x"
+          style="color: transparent;"
+          width="30"
+        />
+      </div>
+      <button
+        class="icon"
+      >
+        <svg
+          color="#aeaeae"
+          fill="currentColor"
+          height="1em"
+          stroke="currentColor"
+          stroke-width="0"
+          style="color: rgb(174, 174, 174);"
+          viewBox="0 0 512 512"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="256"
+            cy="256"
+            r="48"
+          />
+          <circle
+            cx="416"
+            cy="256"
+            r="48"
+          />
+          <circle
+            cx="96"
+            cy="256"
+            r="48"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="tabs"
+    >
+      <a
+        class="active tab"
+        href="#"
+      >
+        Chat
+      </a>
+      <a
+        class="tab"
+        href="#"
+      >
+        Profile
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;

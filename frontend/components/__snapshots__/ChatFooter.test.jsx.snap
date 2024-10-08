@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatFooter component Matches snapshot when input has text 1`] = `
+<DocumentFragment>
+  <div
+    class="footer"
+  >
+    <input
+      class="input"
+      placeholder="Message Target User"
+      type="text"
+      value="Hello"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ChatFooter component Matches snapshot when input is empty 1`] = `
+<DocumentFragment>
+  <div
+    class="footer"
+  >
+    <input
+      class="input"
+      placeholder="Message Target User"
+      type="text"
+      value=""
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ChatFooter component Matches snapshot when targetUserData is undefined 1`] = `
+<DocumentFragment>
+  <div
+    class="footer"
+  >
+    <input
+      class="input"
+      placeholder="Message undefined"
+      type="text"
+      value="Hello"
+    />
+  </div>
+</DocumentFragment>
+`;

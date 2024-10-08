@@ -18,7 +18,6 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
   const ws = useRef<WebSocket | null>(null);
   const connectionId = useRef<number | null>(null);
   const [connection, setConnection] = useState<ConnectionType | undefined>();
-  const [userData, setUserData] = useState<UserType | undefined>();
   const [targetUserData, setTargetUserData] = useState<UserType | undefined>();
   const router = useRouter();
   const { user } = useUser();
@@ -37,9 +36,8 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
 
       // Initialise data from backend API
       try {
-        const [connections, userData, targetUserData] = await Promise.all([
+        const [connections, targetUserData] = await Promise.all([
           fetchData(`http://${apiUrl}/connections/${user}`),
-          fetchData(`http://${apiUrl}/user/${user}`),
           fetchData(`http://${apiUrl}/user/${target}`),
         ]);
 
@@ -55,7 +53,6 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
           setMessages(messagesData);
         }
 
-        setUserData(userData);
         setTargetUserData(targetUserData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -81,7 +78,6 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
     };
   }, [user, target]);
 
-  
   if (loading) return <Spinner />;
 
   return (

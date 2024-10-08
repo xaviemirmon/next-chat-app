@@ -13,7 +13,7 @@ export const ChatHeader = ({
   router,
 }: {
   userName: string | undefined;
-  userId: number | undefined
+  userId: number | undefined;
   setLoading: Dispatch<SetStateAction<boolean>>;
   router: AppRouterInstance;
 }) => {

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Primary button Matches snapshot with icon 1`] = `
+<DocumentFragment>
+  <button
+    class="icon"
+  >
+    Button
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Primary button Matches snapshot without icon 1`] = `
+<DocumentFragment>
+  <button
+    class="primary"
+  >
+    Test
+  </button>
+</DocumentFragment>
+`;

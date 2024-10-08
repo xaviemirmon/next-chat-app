@@ -33,7 +33,10 @@ export const ChatFooter = ({
         connectionId: connectionId.current,
       };
 
-      setMessages((prevMessages: MessageType[]) => [...prevMessages, {createdAt: new Date().toISOString(), ...message}]);
+      setMessages((prevMessages: MessageType[]) => [
+        ...prevMessages,
+        { createdAt: new Date().toISOString(), ...message },
+      ]);
       ws.current.send(JSON.stringify(message));
       setInput("");
     }
