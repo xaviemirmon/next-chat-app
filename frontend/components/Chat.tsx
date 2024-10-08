@@ -90,7 +90,7 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
       />
       <div className={styles.container}>
         <div className={styles.chatWindow}>
-          <div>
+          <div className={styles.messages}>
             <p className={`${styles.center} ${styles.time}`}>
               <strong>{formattedDate(connection?.createdAt)}</strong>&nbsp;
               {formattedTime(connection?.createdAt)}
@@ -120,7 +120,7 @@ const Chat = ({ target, apiUrl }: { target: number; apiUrl: string }) => {
                 currentMessageTimestamp - prevMessageTimestamp >= 3600;
             }
             return (
-              <div key={message.createdAt}>
+              <div className={styles.message} key={message.createdAt}>
                 {olderThanHour && (
                   <p className={`${styles.center} ${styles.time}`}>
                     <strong>{formattedDate(message?.createdAt)}</strong>&nbsp;

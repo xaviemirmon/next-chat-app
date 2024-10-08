@@ -14,10 +14,16 @@
   margin-top: 120px;
   flex-direction: column;
   overflow-x: auto;
-  & > div {
-    display: flex;
-    flex-direction: column;
-  }
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
 }
 
 .matched {
