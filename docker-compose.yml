@@ -3,22 +3,25 @@ services:
     image: node:22
     ports:
       - "3000:3000"
-    command: sh -c "yarn install && yarn dev"
+    command: sh -c "yarn install  && yarn dev"
     working_dir: /frontend
     volumes:
       - ./frontend:/frontend
+    environment:
+      NEXT_BACKEND: http://localhost:3001
+      BACKEND: http://backend:3001
     depends_on:
       - backend
   backend:
     image: node:22
     ports:
       - "3001:3001"
-    command: sh -c "yarn install && npx nodemon server.js"
+    command: sh -c "yarn install && npx nodemon server.ts"
     working_dir: /backend
     volumes:
       - ./backend:/backend
     environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/chatapp?schema=public
+      DATABASE_URL: postgresql://postgres:password@db:5432/chatapp?schema=public
     depends_on:
       - db
   db:
